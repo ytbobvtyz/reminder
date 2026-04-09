@@ -22,7 +22,7 @@ reminder_agent/
 ├── mcp_server.py       # MCP сервер (инструменты + APScheduler + SQLite)
 └── requirements.txt    # Зависимости
 4. Компоненты и их ответственность
-4.1 mcp_server.py — MCP сервер
+4.1 mcp_server.py — MCP сервер - запускается отдельно!
 Ответственность:
 
 Запуск фонового планировщика (APScheduler)
@@ -50,9 +50,9 @@ python
 - Восстановление задач при старте
 Запуск:
 
-python
-# Не запускается отдельно!
-# Используется как дочерний процесс через stdio_client
+
+# Запускается с приложением streamlit
+
 4.2 agent.py — LLM агент
 Ответственность:
 
@@ -85,8 +85,7 @@ text
 Запуск:
 
 python
-# Не запускается отдельно!
-# Импортируется и используется в app.py
+
 4.3 app.py — Streamlit UI
 Ответственность:
 
@@ -170,14 +169,6 @@ Streamlit polling (каждую секунду) → вызывает get_due_tas
     → Streamlit вызывает mark_done
 6. Для агента используй openrouter api модель - MiniMax M2.5. - ключ хранится в переменной OPENROUTER_API_KEY в файле .env
 
-Настройка в agent.py:
-
-python
-self.model = "qwen/qwen3.6-plus-preview:free"
-self.client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=os.getenv("OPENROUTER_API_KEY"),
-)
 7. Критерии приёмки
 Пользователь пишет "напомни через X секунд/минут Y"
 
